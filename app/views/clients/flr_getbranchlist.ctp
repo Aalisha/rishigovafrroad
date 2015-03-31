@@ -1,0 +1,1 @@
+<?php echo $this->Form->input('ClientBank.vc_bank_branch_name',array('div'=>false,'label'=>false,'type'=>'select','required'=>'required','default'=>'','class'=>'round_select','options'=>array(''=>' Select ')+$bankbranch)) ?>

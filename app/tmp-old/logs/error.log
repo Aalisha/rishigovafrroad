@@ -1,0 +1,4 @@
+2014-01-31 08:42:10 Warning: Warning (512): D:\wamp\www\rfa\app\tmp\cache\ is not writable in [D:\wamp\www\rfa\cake\libs\cache\file.php, line 281]
+2014-01-31 08:42:10 Warning: Warning (2): session_start() [<a href='http://php.net/function.session-start'>function.session-start</a>]: open(D:\wamp\www\rfa\app\tmp\sessions\sess_3ac5nug4b494jjoufqar1dvoq0, O_RDWR) failed: No such file or directory (2) in [D:\wamp\www\rfa\cake\libs\cake_session.php, line 587]
+2014-01-31 08:42:10 Warning: Warning (2): Unknown: open(D:\wamp\www\rfa\app\tmp\sessions\sess_3ac5nug4b494jjoufqar1dvoq0, O_RDWR) failed: No such file or directory (2) in [Unknown, line ??]
+2014-01-31 08:42:10 Warning: Warning (2): Unknown: Failed to write session data (files). Please verify that the current setting of session.save_path is correct (D:\wamp\www\rfa\app\tmp\sessions) in [Unknown, line ??]
