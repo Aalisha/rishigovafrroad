@@ -1,0 +1,93 @@
+<form method="post" name="form" data-ng-init="GetGlobalSchedular()" data-ng-controller="executionController" novalidate>
+    <section class="container">
+        <!--workspace start here -->
+        <section class="scheduler-workspace">
+            <!--inner-middle-workspace ends -->
+            <div class="inner-middle-workspace">
+                <h2 class="mb20"><span>Global Scheduler</span></h2>
+                <!--shedule box ends -->
+                <div class="shedule-bell">
+                    <ul>
+                        <li class="sb">
+                            <div class="f-left">
+                                <span class="blue"><i class="fa fa-bell"></i></span>
+                                    Set the Scheduler to run every
+                            </div>
+                            <div class="select-plc">
+                                <div class="select-box">
+                                    <select data-ng-model="globalScheduler.runs_every">
+                                      <option value="5">5</option>
+                                      <option value="10">10</option>
+                                      <option value="15">15</option>
+                                       <option value="20">20</option>
+                                       <option value="30">30</option>
+                                       <option value="60">60</option>
+                                       <option value="90">90</option>
+                                       <option value="180">180</option>
+                                    </select>
+                                </div>
+                            </div>
+           Days  </li>
+                    </ul>
+                    <div class="global-scheduler">
+                        <p>Global Scheduler once started will execute all the Formula scheduled as "Global Scheduler" at a regular interval
+f time period set in the above drop down box. </p>
+                        <p class="pt10 pb20">
+Anywhere in the application, any Formula Execution Plan prefixed with a Blue color bell  <span class="blue pl10 pr10">( <i class="fa fa-bell"></i> )</span> would mean that it
+s scheduled to execute at interval time set under the Global Scheduler </p>
+                    </div>
+
+                    <ul>
+                        <li class="sb">
+						   Initiated from External Interface </li>
+                    </ul>
+                    <div class="external">
+                        <p class="f-left small-text ml20">Use the API all below the execute your Global Scheduler</p>
+                        <p class="f-left small-text ml20 row mt10">
+                            <a target="_blank" href="{{globalScheduler.url}}">{{globalScheduler.url}}</a></p>
+                    </div>
+
+                    <div class="generate-key">
+                        <label class="small-text">Global Schedular Key</label>
+                        <input type="text" data-ng-model="globalScheduler.scheduler_gid" data-ng-disabled="true">
+                    </div>
+                    <!--shedule box ends -->
+                </div>
+
+                <div class="ml20">
+                    <div class="btn-bx mb20">
+                        <a class="popup btn btn-green btn-sm" data-ng-show="globalScheduler.scheduler_status == 'PAUSED'" data-ng-click="GlobalScheduleAction('ACTIVE')" href="javascript:void(0);"> Start </a>
+                        <a class="popup btn btn-red btn-sm" data-ng-show="globalScheduler.scheduler_status == 'ACTIVE'" data-ng-click="GlobalScheduleAction('PAUSED')" href="javascript:void(0);"> Stop </a>
+                    </div>
+                    <h2 data-ng-if="globalScheduler.scheduler_status == 'PAUSED'" class="mt20 mb20 pb20">The Global Scheduler is currently NOT activated.</h2>
+                    <h2 data-ng-if="globalScheduler.scheduler_status == 'ACTIVE'" class="mt20 mb20 pb20">The Global Scheduler is currently activated.</h2>
+                </div>
+
+                <div class="schedule-list">
+                    <ul>
+                        <li data-ng-repeat="formula in formulatypelist">
+                            <a href="#/formulasettings/{{formula.formula_gid}}"><h6 class="calculator_icon">{{formula.formula_name}}</h6></a>
+
+                            <div class="execution small-text">
+                                <div class="exe-head">Saved Executions</div>
+                                <div class="exe-list">
+                                    <ul data-ng-repeat="execution in formula.executionlist | filter : {MFormulaExecutionPlan :{scheduled: 'true'}} ">
+                                        <li><a href="#/formulaExecution/{{formula.formula_gid}}/{{execution.MFormulaExecutionPlan.execution_gid}}"><span class="light-gray"><i class="fa fa-play"></i></span>{{execution.MFormulaExecutionPlan.plan_name}}</a></li>
+                                        <!--<li><a href="javascript:void(0);">
+                                            <span class="blue"><i class="fa fa-bell"></i></span>
+                                            Schedule </a>
+                                        </li>-->    
+                                        <li><a href="#/formulaExecution/{{formula.formula_gid}}/{{execution.MFormulaExecutionPlan.execution_gid}}">Modify </a></li>
+                                        <li><a data-ng-click="DeleteExecution(formula, execution)" href="javascript:void(0);">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                    </ul>
+                </div>
+
+
+                <!--inner-middle-workspace ends -->
+        </section>
+        <!--workspace ends here -->
+    </section>
+</form>

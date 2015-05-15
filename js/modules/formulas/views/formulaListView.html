@@ -1,0 +1,129 @@
+<section class="container" data-ng-controller="formulaController" data-ng-init="LoadAllFormulas()">
+    <!--workspace start here -->
+    <section class="my_workspace">
+        <h2>{{workspacename}}</h2>
+        <div class="create-btn">
+            <a class="btn btn-primary btn-lg" data-ng-click="CreateForumula(workspacegid)" href="javascript:void(0);">
+                <i class="fa fa-calculator"></i>Create New Formula</a>
+        </div>
+
+        <div class="searchbx">
+            <div class="searchbx-plc">
+                <input type="text" class="text-input" data-ng-model="searchfilter" placeholder="Search Formula">
+                <div class="serch-icn"><i class="fa fa-search"></i></div>
+                <div class="clr_search">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-close"></i>
+                    </a>
+                </div>
+            </div>
+             
+            <div class="sort-by">
+                <div data-ng-init="sortopen = false" data-ng-click="sortopen = !sortopen" data-ng-class="{'btn-group' : !sortopen, 'btn-group open' : sortopen}" class="btn-group">
+                    <a data-toggle="dropdown" class="btn" href="javascript:;"> Sort By <i class="fa fa-angle-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a id="regional_stat_world" data-ng-click="orderByField='formula_name'; reverseSort = false" href="javascript:void(0);">Alphabetically A - Z</a></li>
+                        <li><a id="regional_stat_world" data-ng-click="orderByField='formula_name'; reverseSort = true" href="javascript:void(0);">Alphabetically Z - A</a></li>
+                        <li><a id="regional_stat_usa" data-ng-click="orderByField='createdon'; reverseSort = false" href="javascript:void(0);">Modified Date Newest</a></li>
+                        <li><a id="regional_stat_usa" data-ng-click="orderByField='createdon'; reverseSort = true" href="javascript:void(0);">Modified Date Oldest</a></li>
+                    </ul>
+                </div>
+
+            </div><!--sort by ends here -->
+        </div>
+
+        <ul>
+            <li data-ng-repeat="formula in formulatypelist | filter: searchformula | orderBy:orderByField:reverseSort">
+                <a href="#/formulasettings/{{formula.formula_gid}}">
+                    <h6 class="calculator_icon">{{formula.formula_name}}</h6>
+                </a>
+                <div class="f-left small-text formula-desc-lst">
+                    {{formula.formula_description}}
+                </div>
+                <!--<div class="dash-menu small-text">
+                    <ul>
+                        <li><a href="#/formulaExecution/{{formula.formula_gid}}">Execute </a></li>
+                        <li><a href="#/formulasettings/{{formula.formula_gid}}">Modify </a></li>
+                        <li><a href="javascript:void(0);" data-ng-click="DeleteFormula(formula)">Delete </a></li>
+                    </ul>
+                </div>-->
+                <div class="dash-menu-left small-text">
+                    <ul>
+                        <li><a style="cursor: default" href="javascript:void(0);">Formula Type: {{formula.formula_typename}} </a></li>
+                        <li>
+                            <a data-popup-over="formula.sourceList" href="javascript:void(0);" style="cursor: default">
+                                  Source Indicators ({{formula.source_ius_count}}) 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" style="cursor: default">
+                                <span data-ng-class='{ "green": formula.normalization_applied, "red": !formula.normalization_applied}'>
+                                    <i data-ng-class='{ "fa fa-check": formula.normalization_applied, "fa fa-close": !formula.normalization_applied}'></i>
+                                </span>
+                                Normalization applied 
+                            </a>
+                        </li>
+                        <li><a href="#/formulaExecution/{{formula.formula_gid}}">Execute </a></li>
+                        <li><a href="#/formulasettings/{{formula.formula_gid}}">Modify </a></li>
+                        <li><a href="javascript:void(0);" data-ng-click="DeleteFormula(formula)">Delete </a></li>
+                    </ul>
+                </div>
+
+                <div class="saved-executions small-text">
+                    <div class="accordion_example5 smk_accordion acc_with_icon">
+                        <div class="accordion_in acc_active">
+                            <div class="acc_icon_expand"></div>
+                            <div class="acc_head">Saved Executions</div>
+                            <div class="acc_content">
+                                 <div class="content-box">
+                                     <ul data-ng-repeat="execution in formula.executionlist">
+                                         <li><a href="#/formulaExecution/{{formula.formula_gid}}/{{execution.MFormulaExecutionPlan.execution_gid}}"><span class="light-gray"><i class="fa fa-play"></i></span>{{execution.MFormulaExecutionPlan.plan_name}}</a></li>
+                                            <li><a href="javascript:void(0);" data-ng-click="ExecuteFromWorkspace(execution.MFormulaExecutionPlan, false)">Re- Execute </a></li>
+                                            <li>
+                                                <a data-ng-if="!execution.MFormulaExecutionPlan.scheduled" data-ng-click="ExecuteFromWorkspace(execution.MFormulaExecutionPlan, true)" href="javascript:void(0);">
+                                                    <span data-ng-class='{ "blue": execution.MFormulaExecutionPlan.scheduled, "green": !execution.MFormulaExecutionPlan.scheduled}'>
+                                                    </span>
+                                                    Schedule 
+                                                </a>
+                                                <a data-ng-if="execution.MFormulaExecutionPlan.scheduled" href="javascript:void(0);" style="cursor: default">
+                                                    <span data-ng-class='{ "blue": execution.MFormulaExecutionPlan.scheduled, "green": !execution.MFormulaExecutionPlan.scheduled}'>
+                                                    <i class="fa fa-bell"></i>
+                                                    </span>
+                                                    Scheduled 
+                                                </a>
+                                            </li>
+                                            <li><a href="#/formulaExecution/{{formula.formula_gid}}/{{execution.MFormulaExecutionPlan.execution_gid}}">Modify </a></li>
+                                         <li><a href="#/formulaExecution/{{formula.formula_gid}}/{{execution.MFormulaExecutionPlan.execution_gid}}">View Logs</a></li>
+                                            <li><a data-ng-click="DeleteExecution(formula, execution)" href="javascript:void(0);">Delete</a></li>
+                                     </ul>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+
+
+    </section>
+    <!--workspace ends here -->
+    <div id="dialog-confirm" class="cnf-box hidden">{{message}}</div>
+</section>
+<script>
+        $(document).ready(function() {
+            function setHeight() {
+            var top = $('.main-header ').outerHeight();
+            var nav = $('.breadcrum-nav').outerHeight();
+            var action = $('.continue').outerHeight();
+            var bottom = $('.footer').outerHeight();
+            var totHeight = $(window).height();
+            var newHeight = ( totHeight - top - nav - bottom );
+            $('.my_workspace').css({ 
+              'min-height': newHeight + 'px'
+            });
+         }
+         $(window).on('resize', function() { setHeight(); });
+          setHeight();
+    });    
+</script>

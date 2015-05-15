@@ -1,0 +1,196 @@
+<form method="post" name="form" data-ng-init="LoadExecution()" data-ng-controller="executionController" novalidate>
+    <div class="main-middle">
+        <section class="container">
+            <!--workspace start here -->
+            <section class="my_workspace">
+                <!--execute-formula-workspace starts -->
+                <div class="execute-formula-workspace">
+                    <div class="execute-formula">
+                        <h2 class="mb20"><span>{{workspace.workspacename}} -</span> {{formula.formula_name}} <i class="fa  fa-angle-double-right"> </i>New Execution</h2>
+                        <h6 class="calculator_icon">{{formula.formula_name}}</h6>
+                        <br>
+                        <p class="f-left small-text formula-desc ml10">{{formula.formula_description}}</p>
+                        <div class="border-box mb20 mt20">
+                            <ul>
+                                <li>
+                                    <div class="dash-menu-left small-text">
+                                        <ul>
+                                            <li><a style="cursor: default" href="javascript:void(0);">Formula Type: {{formula.formulatypeselected.type_name}} </a></li>
+                                            <li><a style="cursor: default" href="javascript:void(0);">Source Indicators ({{formula.source_ius_count}}) </a></li>
+                                            <li>
+                                                <a href="javascript:void(0);" style="cursor: default">
+                                                    <span data-ng-class="{ 'green': formula.normalization_applied, 'red': !formula.normalization_applied}">
+                                                        <i data-ng-class="{ 'fa fa-check': formula.normalization_applied, 'fa fa-close': !formula.normalization_applied}"></i>
+                                                    </span>
+                                        Normalization applied
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="select-geographic-area  mt10">
+                            <div class="area-left p20">
+                                <div class="f-left">
+                                    <div class="roung-gray-cricle">1
+                                    </div>
+                                </div>
+                                <span class="sb ml10">Select Geographic Area </span>
+                                <div class="selected-plc">
+                                    <div class="changelist">
+                                        <label>
+                                            <input type="checkbox" data-ng-model="frmexecute.area_subtotaling">Subtotaling</label>
+                                    </div>
+                                </div>
+                                <div class="subgroup-checkbx-plc mb20">
+                                    <div class="subgroup" data-ng-hide="frmexecute.area_subtotaling">
+                                        <!-- Nested node template -->
+                                        <script type="text/ng-template" id="nodes_renderer.html">
+                                            <div ui-tree-handle class="tree-node tree-node-content">
+                                            
+                                              <span data-ng-if="node.childExists" ng-click="AddNewSubItem(this)" ng-class="{'plus': collapsed, 'minus': !collapsed}"></span>
+                                            
+                                              <span data-ng-if="!node.childExists" class="dot"></span>
+                                              <label><input type="checkbox" checklist-model="frmexecute.area_selected" checklist-value="node.id" checklist-comparator="CompareAreaCheckbox">{{node.n}}</label>
+                                            </div>
+                                            <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{'angular-ui-tree-hidden': collapsed}">
+                                              <li ng-repeat="node in node.nodes" data-nodrag ui-tree-node ng-include="'nodes_renderer.html'" ng-show="IsTreeVisible(node,this)">
+                                              </li>
+                                            </ol>
+                                            
+                                        </script>
+                                        <div data-ui-tree id="tree-root">
+                                            <ol data-ui-tree-nodes="" data-ng-model="formula.Areas">
+                                                <li data-ng-repeat="node in formula.Areas" data-nodrag data-ui-tree-node data-ng-include="'nodes_renderer.html'" data-ng-show="IsTreeVisible(node, this)"></li>
+                                            </ol>
+                                        </div>  
+                                    </div>
+                                    <div data-ng-hide="!frmexecute.area_subtotaling">
+                                        <span class="frmLevel">
+                                            <select data-ng-model="frmexecute.area_level_from" data-ng-options="tps.AreaLevel.Level_NId as tps.AreaLevel.Area_Level_Name for tps in formula.Levels">
+                                            </select>
+                                        </span>
+                                        <span class="toLevel">
+                                            <select data-ng-model="frmexecute.area_level_to" data-ng-options="tps.AreaLevel.Level_NId as tps.AreaLevel.Area_Level_Name for tps in formula.Levels">
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="area-right p20">
+                                <div class="f-left">
+                                    <div class="roung-gray-cricle">2
+                                    </div>
+                                </div>
+                                <span class="sb ml10">Select Time Periods</span>
+                                <div class="rad-btn-plc mb20">
+                                    <div class="subgroup">
+                                        <ul>
+                                            <li>
+                                                <input type="radio" data-ng-model="frmexecute.timeperiod_type" value="MRD">
+                                             Most Recent Data
+                                            </li>
+                                        </ul>
+                                        <ul>
+                                            <li>
+                                                <input type="radio" data-ng-model="frmexecute.timeperiod_type" value="MTP">
+                                              Select Time Period
+                                            </li>
+                                            <li>
+                                                <ul class="ml10 pl10 tplist-over">
+                                                    <li data-ng-repeat="tpl in formula.TimePeriods">
+                                                        <label>
+                                                            <input data-ng-disabled="frmexecute.timeperiod_type != 'MTP'" type="checkbox" checklist-comparator="CompareTimePeriodCheckbox" checklist-model="frmexecute.time_periods" checklist-value="tpl.Timeperiod.TimePeriod">
+                                                                {{tpl.Timeperiod.TimePeriod}}
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overlay-plc" data-ng-show="VisibleExecutionProcess" data-ng-init="VisibleExecutionProcess = false">
+                            <div class="overlay-bx">
+                                <div class="content">
+                                  Executing
+                                    <i class="fa  fa-angle-double-right"> </i> {{formula.formula_name}} - {{formula.plan_name}}
+                                    <ul>
+                                        <li data-ng-class="CompilingClass" class="text-devider"><a href="javascript:void(0);">Compiling Data</a></li>
+                                        <li data-ng-class="NormalizingClass" class="text-devider"><a href="javascript:void(0);">Normalizing Values</a></li>
+                                        <li data-ng-class="TargetClass" class="text-devider"><a href="javascript:void(0);">Generating Target Values</a></li>
+                                        <li data-ng-class="DataLogClass"class="text-devider"><a href="javascript:void(0);">Data View Log</a></li>
+                                    </ul>
+                                    <div class="cancle-bg">
+                                        <a data-ng-click="CancelExecution()" href="javascript:void(0);"> <i class="fa fa-remove"> </i> </a>
+                                    </div>
+                                    <p class="small-text mt20 pt10">
+                                        Cancel the Execution Process
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                   <div class="execution-name-bx">
+                    <label> Execution Name </label>
+                    <input type="text" placeholder="Execution name" data-ng-model="frmexecute.plan_name">
+                    <a data-ng-click="SaveExecuteFormula(false)" data-ng-disabled="!frmexecute.plan_name" href="javascript:void(0)" class="popup btn btn-grey btn-sm"> Execute Now </a>
+                    <a data-ng-click="SaveExecuteFormula(true)" data-ng-disabled="!frmexecute.plan_name" href="javascript:void(0)" class="popup btn btn-normal btn-sm"> Schedule </a>
+                    <a  data-ng-show="frmexecute.logurl" href="frmexecute.logurl" target="_blank" class="popup btn btn-normal btn-sm"> View Log File </a>
+                </div>
+                    </div>
+                    <!--execute-formula-workspace ends -->
+                </div>
+               
+            </div>
+            <!--inner-middle-workspace ends -->
+           </section>
+       <!--workspace ends here -->
+       </section>
+    <!--Main Section of the Page ends here -->
+    <div id="dialog-confirm" class="cnf-box hidden">{{message}}</div>
+   </div>
+</form>
+<script>
+    $(document).ready(function ()
+    {
+        function setHeight()
+        {
+            var top = $('.main-header ').outerHeight();
+            var nav = $('.breadcrum-nav').outerHeight();
+            var action = $('.continue').outerHeight();
+            var bottom = $('.footer').outerHeight();
+            var totHeight = $(window).height();
+            var newHeight = (totHeight - top - nav - action - bottom);
+            var mainHeight = (totHeight - top - bottom);
+            var dalalistHeight = (newHeight - 280);
+            var trlstHeight = (mainHeight - 450);
+            var ovrlayplcHeight= (trlstHeight + 215)
+            var timeperiodHeight = (trlstHeight +50)
+            $('.execute-formula-workspace .execute-formula .subgroup-checkbx-plc').css({
+                'height': trlstHeight + 'px'
+            });
+
+            $('.main-middle').css({
+                'min-height': mainHeight + 'px'
+            });
+            $('.execute-formula-workspace .execute-formula .overlay-plc .overlay-bx').css({
+                'height': ovrlayplcHeight + 'px'
+            });
+            
+           
+            $('.execute-formula-workspace .execute-formula .select-geographic-area .area-right .subgroup').css({
+                'height': timeperiodHeight + 'px'
+            });
+
+            $('.tplist-over').css({
+                'height': trlstHeight + 'px',
+                'overflow': 'auto',
+                'width': '100%'
+            });
+        }
+        $(window).on('resize', function () { setHeight(); });
+        setHeight();
+    });    
+</script>

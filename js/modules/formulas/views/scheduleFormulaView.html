@@ -1,0 +1,76 @@
+<form method="post" name="form" data-ng-init="LoadExecution()" data-ng-controller="executionController" novalidate>
+    <!--Section starts Here -->
+    <section class="container">
+        <!--workspace start here -->
+        <section class="scheduler-workspace">
+            <!--inner-middle-workspace ends -->
+            <div class="inner-middle-workspace">
+                <h2 class="mb20"><span>Execute -</span> Flood Index <i class="fa  fa-angle-double-right"> </i>New Execution</h2>
+                <div class="shedule-bell">
+                    <ul>
+                        <li>
+                            <div class="f-left">
+                                <span class="green"><i class="fa fa-bell"></i></span>
+                                <input type="radio" name="group">
+             Execute this every
+                            </div>
+                            <div class="select-plc">
+                                <div class="select-box">
+                                    <select>
+                                        <option>10</option>
+                                        <option>20</option>
+                                        <option>30</option>
+                                    </select>
+                                </div>
+                            </div>
+           Days </li>
+                        <li> <span class="blue"><i class="fa fa-bell"></i></span>
+                            <input type="radio" name="group">
+           Use Global Scheduler Execute every 15 days </li>
+                    </ul>
+                </div>
+                <div class="btn-bx">
+                    <a class="popup btn btn-green btn-sm" href="javascript:void(0);"> Start </a>
+                    <a class="popup btn btn-red btn-sm" href="javascript:void(0);"> Stop </a>
+                </div>
+                <div class="execution-history sb">Execution History</div>
+                <div class="execution-history-plc">
+                    <div class="subgroup">
+                        <div class="execution-history-bar">
+                            <ul>
+                                <li> Executed on</li>
+                                <li> Log</li>
+                                <li> Status</li>
+                            </ul>
+                        </div>
+                        <ul>
+                            <li> 05 Feb 2015 </li>
+                            <li> 05 Feb 2015 </li>
+                            <li> 05 Feb 2015 </li>
+                            <li> 05 Feb 2015 </li>
+                        </ul>
+                        <ul>
+                            <li> View log </li>
+                            <li> View log </li>
+                            <li> View log </li>
+                            <li> View log </li>
+                        </ul>
+                        <ul>
+                            <li> Success </li>
+                            <li> Success </li>
+                            <li> Success </li>
+                            <li> Success </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="f-text mb20">
+                    <h2> Flood Index <i class="fa  fa-angle-double-right"> </i> Districts of Rajasthan </h2>
+                    <h1>Next Scheduled Execution On : 15 Feb, 2015 </h1>
+                </div>
+            </div>
+            <!--inner-middle-workspace ends -->
+        </section>
+        <!--workspace ends here -->
+    </section>
+</form>

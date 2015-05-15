@@ -1,0 +1,271 @@
+<form method="post" name="form" data-ng-init="LoadFormula()" data-ng-controller="formulaController" data-ng-submit="SaveFormula(formula)" novalidate>
+    <section class="breadcrum-nav off-white">
+        <div class="container-nav">
+            <ul>
+                <li><a href="#/saveformula/{{formula.formula_gid}}">3. Save Formula</a> </li>
+                <li class="active"><a href="#/formulaIndicators/{{formula.formula_gid}}">2. Indicators</a> </li>
+                <li><a href="#/formulasettings/{{formula.formula_gid}}">1. Formula Settings</a> </li>
+                <li>
+                    <h6 class="orange nav-title">Create Your Formula</h6>
+                </li>
+            </ul>
+            <div class="databseName small-text">
+                <a href="#/my-formula/{{workspacegid}}">{{formula.formula_name}}</a>
+            </div>
+        </div>
+    </section>
+    <section class="container">
+        <section class="inner-middle-workspace">
+            <div class="left-stp2">
+                <span class="title"><h4>Target Indicator </h4></span>
+                <div class="target-indicator-stp2">
+                    <br>
+                    <a>Database</a>
+                    <div class="row">
+                        <div class="frm-prt">
+                            <div angucomplete-alt id="ddlTargetDatabase" placeholder="Target Database" pause="100" initial-value="{{formula.tgt_devinfo_db_name}}" selected-object="SelectedTargetDatabase" local-data="formula.databaselist" search-fields="name" title-field="name" minlength="1" input-class="mt20 mb20" match-class="highlight"></div>
+                            <a class="popup" rel="AddDatabase" href="javascript:void(0);" data-ng-click="popup('AddDatabase', 'TargetPopup')">
+                                <div class="dot-plc">
+                                    <i class="fa  fa-circle"></i><i class="fa  fa-circle"></i><i class="fa  fa-circle"></i>
+                                </div>
+                            </a>
+                            <div class="drp-down">
+                                <a data-ng-click="ShowAutoComplete('ddlTargetDatabase')" href="javascript:void(0);">
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subgroup-rad-plc">
+                        <div class="subgroup">
+                            <a>Select Indicator </a>
+                            <div class="search-frm">
+                                <input type="text" name="Search Indicator" ng-model="TargetIndicatorFilter" placeholder="Search Indicator" class="text-input" id="filter">
+                                <div class="serch-icn"><i class="fa fa-search"></i></div>
+                                <div class="clr_search">
+                                    <a data-ng-click="ClearSearchIndicator('TargetIndicatorFilter')" href="javascript:void(0);">
+                                        <i class="fa fa-close"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="data-listing">
+                                <div class="loader" id="indicatorListLoader" style="display: none;">
+                                    <i class="fa fa-spinner fa-spin fa-4x"></i>
+                                </div>
+                                <div class="iusListing">
+                                    <div class="indicatorList">
+                                        <div class="indicatorObj" data-ng-repeat="indicator in formula.TargetIndicatorList | filter: TargetIndicatorFilter" data-on-finish-render="ngRepeatFinished">
+                                            <a href="javascript:void(0);" data-ng-click="updateSubGroup(indicator, formula.tgt_devinfo_db_id)" data-ng-init="selected = false" data-ng-class="{'IndTitle': !selected, 'IndTitle selected': selected}" class="IndTitle" id="{{indicator.Ind_GID +'{tgt}'+ indicator.Unit_GID}}">{{indicator.tgt_Indicator}}, {{indicator.tgt_Unit}}</a>
+                                            <ngsubgrouplist elementtype="radio"></ngsubgrouplist>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="TagOuterBox">
+                            
+                            <div class="indicator-tag" data-ng-show="formula.tgt_Indicator">
+                                <span data-pop-over="{{formula.TargetTooltip}}"> {{formula.tgt_Indicator}}, {{formula.tgt_Unit}}</span>
+                                <i class="fa fa-close" data-ng-click="ClearSelection(true)"></i>
+                                <!--<a>-->  
+                                    <!--<span>{{formula.tgt_Indicator}}, {{formula.tgt_Unit}}</span>
+                                    <div class="subgroup-list">
+                                        <span>{{formula.tgt_Subgroup}}</span>
+                                    </div>-->
+                                <!--</a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ </div>
+            <div class="right-stp2">
+                <span class="title"><h4>Source Indicator </h4></span>
+                <div class="target-indicator-stp2">
+                    <br>
+                    <a>Database</a>
+                    <div class="row">
+                        <div class="frm-rgt">
+                            <div angucomplete-alt id="ddlSourceDatabase" placeholder="Source Database" pause="100" initial-value="{{formula.src_devinfo_db_name}}" selected-object="SelectedSourceDatabase" local-data="formula.databaselist" search-fields="name" title-field="name" minlength="1" input-class="mb20 input-target angucomplete-dropdown1" match-class="highlight"></div>
+                            <a class="popup" rel="AddDatabase" href="javascript:void(0);" data-ng-click="popup('AddDatabase', 'SourcePopup')">
+                                <div class="dot-plc">
+                                    <i class="fa  fa-circle"></i><i class="fa  fa-circle"></i><i class="fa  fa-circle"></i>
+                                </div>
+                            </a>
+                            <div class="drp-down">
+                                <a data-ng-click="ShowAutoComplete('ddlSourceDatabase')" href="javascript:void(0);">
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subgroup-rad-plc">
+                        <div class="subgroup">
+                            <a>Select Indicator </a>
+                            <div class="search-frm">
+                                <input type="text" name="Search Indicator" ng-model="SourceIndicatorFilter" placeholder="Search Indicator" class="text-input" id="filter">
+                                <div class="serch-icn"><i class="fa fa-search"></i></div>
+                                <div class="clr_search">
+                                    <a data-ng-click="ClearSearchIndicator('SourceIndicatorFilter')" href="javascript:void(0);">
+                                        <i class="fa fa-close"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="data-listing">
+                                <div class="loader" id="indicatorListLoader" style="display: none;">
+                                    <i class="fa fa-spinner fa-spin fa-4x"></i>
+                                </div>
+                                <div class="iusListing">
+                                    <div class="indicatorList">
+                                        <div class="indicatorObj" data-ng-repeat="indicator in formula.SourceIndicatorList | filter: SourceIndicatorFilter" data-on-source-finish-render="ngRepeatFinished">
+                                            <a href="javascript:void(0);" data-ng-click="updateSubGroup(indicator, formula.src_devinfo_db_id)" data-ng-init="selected = false" data-ng-class="{'IndTitle': !selected, 'IndTitle selected': selected}" class="IndTitle" id="{{indicator.Ind_GID +'{src}'+ indicator.Unit_GID}}">{{indicator.tgt_Indicator}}, {{indicator.tgt_Unit}}</a>
+                                            <ngsubgrouplist elementtype="checkbox"></ngsubgrouplist>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="TagOuterBox">
+                            <div class="indicator-tag" data-ng-show="srcindicator.src_indicator" data-ng-repeat="srcindicator in formula.IndicatorSubgroupTree">
+                                <span data-pop-oversrc="srcindicator" data-ng-show="srcindicator.src_indicator"> {{srcindicator.src_indicator}}, {{srcindicator.src_unit}}</span>
+                                <i class="fa fa-close" data-ng-click="ClearSourceSelection(true, srcindicator.src_indicator, srcindicator.src_unit)"></i>
+                                <!--<div class="indicator-tooltip" data-ng-show="srcindicator.src_indicator">
+                                    <span>{{srcindicator.src_indicator}}, {{srcindicator.src_unit}}</span>
+                                    <div class="subgroup-list" data-ng-repeat="sub in srcindicator.SubGroup">
+                                        <span>{{sub.src_subgroup}}</span>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </section>
+        <input type="text" data-ng-show="false" data-ng-model="FomulaStep" data-ng-init="FomulaStep = '2'" value="2"/>
+        <section class="continue">
+            <div class="container">
+                <a class="btn btn-success btn-sm" data-ng-click="SaveFormula()" href="javascript:void(0)"><i class="fa  fa-save"></i> Save</a>
+                <a class="btn btn-success btn-sm" href="#/saveformula/{{formula.formula_gid}}">Continue
+                    <i class="fa  fa-angle-double-right"></i>
+                </a>
+            </div>
+        </section>
+        <div class="popupbox addDatabsebox" id="AddDatabase" data-ng-form="popupform">
+            <div class="close" id="close">
+                <a href="javascript:void(0);" data-ng-click="ClosePopUp()">
+                    <i class="fa fa-close"></i>
+                </a>
+            </div>
+            <div class="poptxt-tp">
+                <h3 class="mb10">Target Database Connection Details</h3>
+            </div>
+            <div class="addDatabaseFields mt10">
+                <div class="connection_details pt20">
+                    <div class="form-group">
+                        <div class="input text">
+                            <label for="UserHost">Name*</label>
+                            <input name="db_name" type="text" data-ng-model="formula.db_name" required />
+                            <span class="span-dbpopup" data-ng-show="popupform.$submitted || popupform.db_name.$touched">
+                                <span data-ng-show="popupform.db_name.$error.required">
+                                  *Name is required.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input text">
+                            <label for="UserHost">Host*</label><input name="db_host" type="text" data-ng-model="formula.db_host" required />
+                            <span class="span-dbpopup" data-ng-show="popupform.$submitted || popupform.db_host.$touched">
+                                <span data-ng-show="popupform.db_host.$error.required">
+                                  *Host is required.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input text">
+                            <label for="UserLogin">Login*</label><input name="db_login" type="text" data-ng-model="formula.db_login" required />
+                            <span class="span-dbpopup" data-ng-show="popupform.$submitted || popupform.db_login.$touched">
+                                <span data-ng-show="popupform.db_login.$error.required">
+                                  *Login is required.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input password">
+                            <label for="UserPassword">Password*</label><input name="db_password" type="password" data-ng-model="formula.db_password" required />
+                            <span class="span-dbpopup" data-ng-show="popupform.$submitted || popupform.db_password.$touched">
+                                <span data-ng-show="popupform.db_password.$error.required">
+                                  *Password is required.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input text">
+                            <label for="UserPort">Port*</label><input name="db_port" type="text" data-ng-model="formula.db_port" required />
+                            <span class="span-dbpopup" data-ng-show="popupform.$submitted || popupform.db_port.$touched">
+                                <span data-ng-show="popupform.db_port.$error.required">
+                                  *Port is required.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input text">
+                            <label for="UserDatabase">Database*</label>
+                            <input name="db_database" type="text" data-ng-model="formula.db_database" required />
+                            <span class="span-dbpopup" data-ng-show="popupform.$submitted || popupform.db_database.$touched">
+                                <span data-ng-show="popupform.db_database.$error.required">
+                                  *Database is required.
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="submit" data-ng-disabled="popupform.$invalid" data-ng-click="SaveConnection()" class="btn btn-sm btn-green-success f-left" id="btn_submit">
+                  Submit
+                </button>
+                <button type="button" name="cancel" data-ng-click="ClosePopUp()" class="btn btn-sm btn-grey f-left ml10" id="btn_cancel">Cancel</button>
+                <button type="button" name="test" data-ng-disabled="popupform.$invalid" data-ng-click="TestConnection()" id="btn_test" class="btn btn-sm btn-primary f-right">
+                  Test connection
+                    <i class="{{connectionclass}}" style="{{connectioncolor}}"></i>
+                </button>
+            </div>
+        </div>
+        <div id="loader" class="loader" style="display: none;"><i class="fa fa-spinner fa-spin fa-4x HeadingDark"></i></div>
+        <div id="fade" class="overlay"></div>
+        <div id="mask" class="overlay"></div>
+    </section>
+</form>
+<script>
+    $(document).ready(function ()
+    {
+        function setHeight()
+        {
+            var top = $('.main-header ').outerHeight();
+            var nav = $('.breadcrum-nav').outerHeight();
+            var action = $('.continue').outerHeight();
+            var bottom = $('.footer').outerHeight();
+            var totHeight = $(window).height();
+            var newHeight = (totHeight - top - nav - action - bottom );
+            var dalalistHeight = (newHeight - 280);
+            $('.inner-middle-workspace .target-indicator-stp2').css({
+                'height': newHeight + 'px'
+            });
+            $('.inner-middle-workspace .target-indicator-stp2 .data-listing').css({
+                'height': dalalistHeight + 'px'
+            });
+        }
+        $(window).on('resize', function () { setHeight(); });
+        setHeight();
+    });    
+</script>

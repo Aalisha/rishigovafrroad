@@ -1,0 +1,51 @@
+<section class="container"> 
+<section class="my_workspace" data-ng-controller="workspaceController" data-ng-init="LoadWorkspaces()">
+    <h2>My Workspaces</h2>
+    <div class="create-btn">
+    	<a href="#/createworkspace" class="btn btn-primary btn-lg">
+            <i class="fa fa-folder "></i> 
+            Create New Workspace
+        </a>
+    </div>
+     <span class="span-autherror" data-ng-show="ShowHideError">
+          An error occured. Please try again.
+     </span>
+    <ul>
+      <li data-ng-repeat ="workspace in workspaceslist.workspaces"> 
+       <a href="#/my-formula/{{workspace.workspacegid}}">
+            <h6 >
+                <i class="fa fa-folder"></i>
+                {{workspace.workspace_name}}
+            </h6>
+        </a>
+
+        <div class="dash-menu small-text">
+          <ul>
+            <li><a href="#/editworkspace/{{workspace.workspacegid}}">Modify</a></li>
+            <li><a id="{{workspace.workspacegid}}" data-ng-click="Delete(workspace)" href="javascript:void(0)">Delete </a></li>
+          </ul>
+        </div>
+
+      </li>
+    </ul>
+     <div id="dialog-confirm" class="cnf-box hidden">Are you sure you want to delete?</div>
+    </section>
+</section>
+<script>
+        $(document).ready(function() {
+            function setHeight() {
+            var top = $('.main-header ').outerHeight();
+            var nav = $('.breadcrum-nav').outerHeight();
+            var action = $('.continue').outerHeight();
+            var bottom = $('.footer').outerHeight();
+            var totHeight = $(window).height();
+            var newHeight = ( totHeight - top - nav - bottom );
+            $('.my_workspace').css({ 
+              'min-height': newHeight + 'px'
+            });
+         }
+         $(window).on('resize', function() { setHeight(); });
+          setHeight();
+    });    
+</script>
+

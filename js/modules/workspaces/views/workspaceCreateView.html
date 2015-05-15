@@ -1,0 +1,50 @@
+<section class="container"> 
+<form method="post" name="form" data-ng-controller="workspaceController" data-ng-submit="Create(workspace)" novalidate>
+<section class="my_workspace">
+	<div class="new-form-creation">
+        <h4>My Workspaces - Create New Workspace</h4>
+		<div class="row mb20" >
+			<div class="frm-prt">
+				
+                <label>Workspace Name</label>
+                <input type="text" class="mt20 mb10" name="workspace_name" data-ng-model="workspace.workspace_name" required/>
+				<span class="span-wrkspcerror" data-ng-show="form.$submitted || form.workspace_name.$touched">
+                        <span data-ng-show="form.workspace_name.$error.required">
+                            *Workspace name is required.
+                        </span>
+                 </span>
+
+				<label>Description</label>
+			    <textarea rows="4" class="description mt20 mb10" name="workspace_description" data-ng-model="workspace.workspace_description"  required></textarea>
+                <span class="span-wrkspcerror" data-ng-show="form.$submitted || form.workspace_description.$touched">
+                        <span data-ng-show="form.workspace_description.$error.required">
+                            *Workspace description is required.
+                        </span>
+                 </span> 
+                <button type="submit"  class="savegreen">Save</button>
+			</div>	
+		</div>
+	</div>
+</section>
+</form>
+</section>
+<script>
+    $(document).ready(function ()
+    {
+        function setHeight()
+        {
+            var top = $('.main-header ').outerHeight();
+            var nav = $('.breadcrum-nav').outerHeight();
+            var action = $('.continue').outerHeight();
+            var bottom = $('.footer').outerHeight();
+            var totHeight = $(window).height();
+            var newHeight = (totHeight - top - nav - bottom);
+            var workspcHeight = (totHeight - top - bottom);
+            $('.my_workspace').css({
+                'height': workspcHeight + 'px'
+            });
+        }
+        $(window).on('resize', function () { setHeight(); });
+        setHeight();
+    });    
+</script>

@@ -1,0 +1,75 @@
+<section class="container register-page">
+<form name="form" novalidate>
+
+  <h2>Create Account</h2>
+  <div class="regi-box" ng-controller="adduserController">
+    <div class="form-group">
+        <div class="input text">
+        <label for="UserUsername">Name*</label>
+        <input type="text" placeholder="Enter Your Full Name" name="uName" title="Please enter your name." data-ng-model="user.username" required>
+        <span class="span-error" ng-show="form.$submitted || form.uName.$touched">
+            <span data-ng-show="form.uName.$error.required">
+                *Name is required.
+            </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="input email">
+        <label for="UserEmail">Email*</label>
+        <input type="email" placeholder="Enter Your email" name="uEmail" title="Please enter your email." 
+                  data-ng-model="user.email" 
+                  data-wc-unique
+                  data-ng-minlength="3"
+                  data-wc-unique-property="email"
+                  data-ng-model-options="{ updateOn: 'blur', allowInvalid: true }"
+                  required>
+        <span class="span-error" data-ng-show="form.uEmail.$touched && form.uEmail.$error.unique">
+            *Email already in use
+        </span>
+        <span class="span-error" ng-show="form.$submitted || form.uEmail.$touched">
+            <span data-ng-show="form.uEmail.$error.required">
+                *Email is required.
+            </span>
+            <span ng-show="form.uEmail.$error.email">*Email Address is invalid.</span>
+        </span>
+      </div>
+    </div>
+    
+     <div class="form-group">
+      <div class="input password">
+        <label for="UserPwd">Password*</label>
+        <input type="password" placeholder="Enter Password" data-ng-Minlength="6" name="uPassword" title="Please enter a Password" data-ng-model="user.pwd" required>
+        <span class="span-error" ng-show="form.$submitted || form.uPassword.$touched">
+            <span data-ng-show="form.uPassword.$error.required">
+                *Password is required.
+            </span>
+            <span data-ng-show="form.uPassword.$error.minlength">
+                *Minimum 6 characters required.
+            </span>
+        </span>
+       </div>
+    </div>
+
+    <div class="form-group">
+      <div class="input password">
+        <label for="UserConpwd">Confirm Password*</label>
+        <input type="password" placeholder="Confirm Password" name="UConfirmpassword" title="Confirm password" 
+                      data-ng-model="user.confirmpassword"
+                      requireds compare-to="user.pwd">
+        <span class="span-error" data-ng-show="form.UConfirmpassword.$touched && form.UConfirmpassword.$error.compareTo">
+            *Confirm password do not match.
+        </span></div>
+    </div>
+   
+    <div class="form-action"> 
+        <button type="submit" data-ng-click="SignUp()">Sign Up</button>
+    </div>
+
+
+
+  </div>
+</form>
+  <!--ragister container end Here--> 
+</section>

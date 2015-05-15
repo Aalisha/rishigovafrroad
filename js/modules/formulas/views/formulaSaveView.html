@@ -1,0 +1,125 @@
+<form method="post" name="form" data-ng-init="LoadFormula()" data-ng-controller="formulaController" data-ng-submit="SaveFormula(formula)" novalidate>
+    <!--breadcrumb start here -->
+    <section class="breadcrum-nav off-white">
+        <div class="container-nav">
+            <ul>
+                <li class="active"><a href="#/saveformula/{{formula.formula_gid}}">3. Save Formula</a> </li>
+                <li><a href="#/formulaIndicators/{{formula.formula_gid}}">2. Indicators</a> </li>
+                <li><a href="#/formulasettings/{{formula.formula_gid}}">1. Formula Settings</a> </li>
+                <li>
+                    <h6 class="orange nav-title">Create Your Formula</h6>
+                </li>
+            </ul>
+            <div class="databseName small-text">
+                <a href="#/my-formula/{{workspacegid}}">{{formula.formula_name}}</a>
+            </div>
+            </li>
+        </div>
+   </div>
+    </section>
+    <section class="container">
+        <!--workspace start here -->
+        <section class="inner-middle-workspace">
+            <div class="formset">
+                <label>Formula Settings</label>
+                <div class="formset-lft">
+                    <div class="category mt10 mb10" data-ng-repeat="srcindicator in formula.IndicatorSubgroupTree">
+                        <div class="f-left">
+                            <div class="roung-gray-cricle">{{srcindicator.src_iu_symbol}}</div>
+                        </div>
+                        <ul>
+                            <li>{{srcindicator.src_indicator}}, {{srcindicator.src_unit}}</li>
+                            <div class="sub-category" data-ng-repeat="sub in srcindicator.SubGroup">
+                                <span class="roung-light-gray-cricle" data-ng-model="sub.src_ius_symbol">{{sub.src_ius_symbol}}</span>
+                                <label>{{sub.src_subgroup}}</label>
+                                <span class="slct">
+                                    <select data-ng-model="sub.normalization" data-ng-change="ProcessNormalization()" data-ng-options="norm.id as norm.type_name for norm in formula.normalization_types">
+                                    </select>
+                                </span>
+                                <span class="ques" data-pop-over="This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit">?</span>
+                                <span class="wght">
+                                    <input type="text" data-ng-change="ProcessNormalization()" data-ng-model="sub.weight" />
+                                </span>
+                                <span class="updwn">
+                                </span>
+                                <span class="ques" data-pop-over="This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit">?</span>
+                                <input type="checkbox" data-ng-change="SaveFormula()" data-ng-model="sub.high_is_good" data-ng-true-value="true" data-ng-false-value="false" class="check">High is Good</input>
+                                    <div class="minmax">
+                                        <span class="autocal mb10">
+                                            <input type="checkbox" data-ng-change="ProcessAutoCalculate(sub)" data-ng-model="sub.AutoCalculate" data-ng-true-value="true" data-ng-false-value="false" class="check">Auto Calculte Min/Max</input>
+                                        </span>
+                                        <span class="min mt20" data-ng-if="sub.normalization != 3" data-ng-show="!sub.AutoCalculate">
+                                            <input type="text" data-ng-change="ProcessNormalization()" data-ng-model="sub.minimum"/>
+                                        </span>
+                                        <span class="max mt20" data-ng-show="!sub.AutoCalculate">
+                                            <input type="text" data-ng-change="ProcessNormalization()" data-ng-model="sub.maximum"/>
+                                        </span>
+                                        <span class="margin mt20" data-ng-show="sub.AutoCalculate">
+                                            <input type="text" data-ng-change="SaveFormula()" data-ng-model="sub.value_margin"/>
+                                        </span>
+                                    </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="formset-rgt">
+                    <label>{{formula.formulatypeselected.type_name}}</label>
+                    <div class="indctbar" data-ng-show="HideCalcualtorPanel">
+                        <span class="roung-light-gray-cricle" data-ng-repeat="srcindicator in formula.selectedsourcesubgroup" data-ng-click="AddOperator(srcindicator.src_ius_symbol)">{{srcindicator.src_ius_symbol}}</span>
+                    </div>
+                    <div class="calbar" data-ng-show="HideCalcualtorPanel">
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('+')">+</span>
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('-')">-</span>
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('*')">*</span>
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('/')">/</span>
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('±')">±</span>
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('sqrt()')">&#8730</span>
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('^2')">^2</span>
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('^n')">^n</span>
+                        <span class="rect-light-gray-button" data-ng-click="AddOperator('()')">(&nbsp)</span>
+                        <span style="width: 36px" class="rect-light-gray-button" data-ng-click="AddOperator('\log')">Log</span>
+                        <span style="width: 36px" class="rect-light-gray-button" data-ng-click="AddOperator('\ln')">ln</span>
+                    </div>
+                    <span class="input">
+                        <input type="text" id="MathInput" data-ng-model="formula.formula" data-ng-change="UpdateMath()" data-ng-disabled="formula.formula_type != 5">
+                        <input type="text" id="MathInput" data-ng-model="formula.Normalizedformula" data-ng-change="UpdateMath()" data-ng-show="false">
+                    </span>
+                    <div class="formprv">
+                        <label>{{formula.tgt_Indicator}}, {{formula.tgt_Unit}}</label>
+                        <div class="box" id="box">
+                            <div id="MathOutput" data-mathjax-bind="formula.Normalizedformula" class="formprv-out">``</div>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" data-ng-show="false" data-ng-model="FomulaStep" data-ng-init="FomulaStep = '3'" value="3"/>
+             </section>
+            <!--workspace ends here -->
+            </div>
+        </section>
+        <!--workspace ends here -->
+    </section>
+    <section class="continue">
+        <div class="container">
+            <a class="btn btn-success btn-sm" data-ng-click="SaveFormula()" href="javascript:void(0)"><i class="fa  fa-save"></i> Save</a>
+            <a class="btn btn-success btn-sm" href="javascript:void(0);">Export Settings <i class="fa  fa-angle-double-right"></i></a>
+            <a class="btn btn-success btn-sm" href="#/formulaExecution/{{formula.formula_gid}}">Execute Formula <i class="fa  fa-angle-double-right"></i></a>
+        </div>
+    </section>
+</form>
+<script>
+        $(document).ready(function() {
+            function setHeight() {
+            var top = $('.main-header ').outerHeight();
+            var nav = $('.breadcrum-nav').outerHeight();
+            var action = $('.continue').outerHeight();
+            var bottom = $('.footer').outerHeight();
+            var totHeight = $(window).height();
+            var newHeight = ( totHeight - top - nav - action - bottom -10 );
+            $('.inner-middle-workspace .formset-lft, .inner-middle-workspace .formset-rgt').css({ 
+              'height': newHeight + 'px'
+            });
+         }
+         $(window).on('resize', function() { setHeight(); });
+          setHeight();
+    });    
+</script>

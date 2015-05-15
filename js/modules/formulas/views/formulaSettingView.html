@@ -1,0 +1,113 @@
+<form method="post" name="form" data-ng-init="LoadFormula()" data-ng-controller="formulaController" data-ng-submit="SaveFormula(formula)" novalidate>
+    <!--breadcrumb start here -->
+    <section class="breadcrum-nav off-white">
+        <div class="container-nav">
+            <ul>
+                <li><a href="#/saveformula/{{formula.formula_gid}}">3. Save Formula</a> </li>
+                <li><a href="#/formulaIndicators/{{formula.formula_gid}}">2. Indicators</a> </li>
+                <li class="active"><a href="#/formulasettings/{{formula.formula_gid}}">1. Formula Settings</a> </li>
+                <li>
+                    <h6 class="orange nav-title">Create Your Formula</h6>
+                </li>
+            </ul>
+            <div class="databseName small-text" >
+                <a href="#/my-formula/{{workspacegid}}">{{formula.formula_name}}</a> 
+            </div>
+        </div>
+    </section>
+    <!--breadcrumb ends here -->
+    <!--Section starts Here -->
+    <section class="container">
+        <!--workspace start here -->
+        <section class="inner-middle-workspace">
+            <div class="frm-setting">
+                <div class="frm-desc"><h6>Formula</h6></div>
+                <div class="new-form-creation">
+                    <div class="frm-prt">
+                        <label>Formula Name</label>
+                        <input type="text" class="mt20 mb20" name="formula_name" data-ng-model="formula.formula_name" data-ng-blur="SaveFormula()">
+
+                        <label>Description</label>
+                        <textarea class="description mt20 mb20" rows="4" name="formula_description" data-ng-model="formula.formula_description" data-ng-blur="SaveFormula()"></textarea>
+
+                        <label>Tags</label>
+                        <input type="text" class="mt20 mb20" name="formula_tags" data-ng-model="formula.formula_tags" data-ng-blur="SaveFormula()">
+                    </div>
+                </div>
+
+
+                <div style="clear: both"></div>
+                <div class="form-type">
+                    <div class="frm-desc"><h6>Formula Type</h6></div>
+                    <div class="frm-typ-selection">
+                        <label>Formula Type</label>
+                        <select data-ng-change="SaveFormulaType()" data-ng-model="formula.formula_type" data-ng-options='option.ID as option.type_name for option in formula.formulatypelist'></select>
+                        <a class="popup" rel="AddDatabase" href="javascript:void(0);" data-ng-click="popup('FormulaList')">
+                            ?
+                        </a>
+                        <div class="form-preview">
+                            <div data-ng-repeat="frm in formula.formulatypelist">
+                                <div class="rright" data-ng-show="formula.formula_type == frm.ID ? true : false">
+                                    <br>
+                                    <br>
+                                    <i data-mathjax-bind="frm.type_expression"></i> <br>
+                                    <br>
+                                    <br>
+                                    <a href="{{frm.href}}" data-ng-show="frm.href" target="_blank">Click here for detailed help on {{frm.type_name}} </a>
+                                    <div>
+                                        {{frm.type_summary}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input type="text" data-ng-show="false" data-ng-model="FomulaStep" data-ng-init="FomulaStep = '1'" value="1"/>
+        <!--workspace ends here -->
+    </section>
+    <!--Section ends Here -->
+    <!--save and continue starts Here-->
+    <section class="continue">
+        <div class="container">
+            <a class="btn btn-success btn-sm" href="javascript:void(0)" data-ng-click="SaveFormula()">
+                <i class="fa  fa-save"></i> Save</a>
+            <a class="btn btn-success btn-sm" href="#/formulaIndicators/{{formula.formula_gid}}">Continue
+                <i class="fa  fa-angle-double-right"></i>
+            </a>
+        </div>
+    </section>
+    <div class="popupbox addDatabsebox" id="FormulaList" data-ng-form="popupform">
+            <div class="close" id="close">
+            <a href="javascript:void(0);" data-ng-click="ClosePopUp()">
+                <i class="fa fa-close"></i>
+            </a>
+        </div>
+            Formula Details
+            <div class="form-group">
+                <button type="button" name="cancel" data-ng-click="ClosePopUp()" class="btn btn-sm btn-grey f-left ml10" id="btn_cancel">Cancel</button>
+            </div>
+    </div>
+
+    <!--save and continue ends Here-->
+    <div id="dialog-confirm" style="width:362px;" class="cnf-box hidden">{{message}}</div>
+    <input type="hidden" name="formula_gid" data-ng-model="formula.formula_gid">
+</form>
+<script>
+        $(document).ready(function() {
+            function setHeight() {
+            var top = $('.main-header ').outerHeight();
+            var nav = $('.breadcrum-nav').outerHeight();
+            var action = $('.continue').outerHeight();
+            var bottom = $('.footer').outerHeight();
+            var totHeight = $(window).height();
+            var newHeight = ( totHeight - top - nav - bottom );
+            $('.inner-middle-workspace').css({ 
+              'height': newHeight + 'px'
+            });
+         }
+         $(window).on('resize', function() { setHeight(); });
+          setHeight();
+    });    
+</script>
